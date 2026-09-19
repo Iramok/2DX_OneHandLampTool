@@ -15,23 +15,9 @@
       --text-sub: #9ca3af;
       --border-color: #2e2e38;
 
-      /* クリアランプカラー */
-      --lamp-easy: #43B54B;   /* 緑 */
-      --lamp-hard: #E53935;   /* 赤 */
-      --lamp-exhard-red: #E53935; /* 点滅用 赤 */
-      --lamp-exhard-yellow: #f59e0b; /* 黄色 */
-    }
-
-    /* EX HARD 点滅アニメーション (赤と黄の交互点滅) */
-    @keyframes exhard-blink {
-      0%, 49% {
-        background-color: var(--lamp-exhard-yellow);
-        color: #000;
-      }
-      50%, 100% {
-        background-color: var(--lamp-exhard-red);
-        color: #fff;
-      }
+      --lamp-easy: #43B54B;
+      --lamp-hard: #E53935;
+      --lamp-exhard: #f59e0b;
     }
 
     body {
@@ -47,9 +33,48 @@
       margin: 0 auto;
     }
 
+    /* ヘッダー＆ユーザーエリア */
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
     h1 {
       font-size: 1.5rem;
-      margin-bottom: 8px;
+      margin: 0;
+    }
+
+    .auth-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+    }
+
+    .user-name {
+      font-size: 0.9rem;
+      font-weight: bold;
+      color: var(--accent-amber);
+    }
+
+    .sync-status {
+      font-size: 0.75rem;
+      color: var(--text-sub);
     }
 
     .meta-info {
@@ -101,7 +126,6 @@
       gap: 8px;
     }
 
-    /* ボタン共通 */
     .btn {
       background-color: #2a2a35;
       color: var(--text-main);
@@ -119,21 +143,28 @@
       background-color: #363645;
     }
 
-    /* MODE アクティブ */
+    .btn-google {
+      background-color: #4285f4;
+      color: #fff;
+      border: none;
+    }
+
+    .btn-google:hover {
+      background-color: #357ae8;
+    }
+
     .btn-mode.active {
       background-color: var(--accent-blue);
       border-color: var(--accent-blue);
       color: #fff;
     }
 
-    /* 公式難易度 アクティブ */
     .btn-bemani.active {
       background-color: var(--accent-purple);
       border-color: var(--accent-purple);
       color: #fff;
     }
 
-    /* 片手難易度 1~10 アクティブ */
     .btn-rank {
       width: 40px;
       height: 40px;
@@ -142,13 +173,13 @@
       align-items: center;
       justify-content: center;
     }
+
     .btn-rank.active {
       background-color: var(--accent-amber);
       border-color: var(--accent-amber);
       color: #000;
     }
 
-    /* 検索バー */
     .search-input {
       width: 100%;
       box-sizing: border-box;
@@ -160,7 +191,7 @@
       font-size: 0.95rem;
     }
 
-    /* アコーディオン */
+    /* アコーディオン & テーブル */
     .accordion-group {
       margin-bottom: 12px;
       border: 1px solid var(--border-color);
@@ -183,13 +214,7 @@
       outline: none;
     }
 
-    summary:hover {
-      background-color: #22222a;
-    }
-
-    summary::-webkit-details-marker {
-      display: none;
-    }
+    summary::-webkit-details-marker { display: none; }
 
     .summary-title {
       display: flex;
@@ -213,7 +238,6 @@
       transform: rotate(180deg);
     }
 
-    /* テーブルスタイル */
     table {
       width: 100%;
       border-collapse: collapse;
@@ -233,9 +257,7 @@
       font-size: 0.85rem;
     }
 
-    tr:hover {
-      background-color: #252530;
-    }
+    tr:hover { background-color: #252530; }
 
     .col-rank {
       width: 90px;
@@ -244,14 +266,8 @@
       color: var(--accent-amber);
     }
 
-    .col-bemani {
-      width: 80px;
-    }
-
-    .col-lamp {
-      width: 180px;
-      text-align: center;
-    }
+    .col-bemani { width: 80px; }
+    .col-lamp { width: 180px; text-align: center; }
 
     .badge {
       display: inline-block;
@@ -263,7 +279,6 @@
     .badge-12 { background-color: #4a1d24; color: #f87171; }
     .badge-11 { background-color: #1e3a5f; color: #60a5fa; }
 
-    /* クリアランプボタン群 */
     .lamp-group {
       display: inline-flex;
       gap: 4px;
@@ -288,46 +303,181 @@
       user-select: none;
     }
 
-    .lamp-btn:hover {
-      background-color: #3b3b4a;
-      color: #fff;
-    }
+    .lamp-btn[data-lamp="E"].active { background-color: var(--lamp-easy); color: #fff; }
+    .lamp-btn[data-lamp="H"].active { background-color: var(--lamp-hard); color: #fff; }
+    .lamp-btn[data-lamp="EX"].active { background-color: var(--lamp-exhard); color: #000; }
 
-    /* ランプのアクティブ（ON）状態 */
-    .lamp-btn[data-lamp="E"].active {
-      background-color: var(--lamp-easy);
-      color: #fff;
-    }
-    .lamp-btn[data-lamp="H"].active {
-      background-color: var(--lamp-hard);
-      color: #fff;
-    }
-    .lamp-btn[data-lamp="EX"].active {
-      animation: exhard-blink 0.6s infinite steps(1);
-    }
-
-    /* レスポンシブ用調整 */
     @media (max-width: 768px) {
-      .col-lamp {
-        width: auto;
-      }
-      .lamp-btn {
-        padding: 5px 8px;
-        font-size: 0.85rem;
-        min-width: 30px;
-      }
+      .col-lamp { width: auto; }
+      .lamp-btn { padding: 5px 8px; font-size: 0.85rem; min-width: 30px; }
     }
   </style>
+
+  <!-- Firebase モジュール読み込み & 設定 -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { 
+      getAuth, 
+      GoogleAuthProvider, 
+      signInWithPopup, 
+      signOut, 
+      onAuthStateChanged 
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { 
+      getFirestore, 
+      doc, 
+      setDoc, 
+      onSnapshot 
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    // 教えていただいたキーを設定済みです
+    const firebaseConfig = {
+      apiKey: "AIzaSyBLvLVqpBAh9jbHsTbZc8mYy3OEjGpfXfI",
+      authDomain: "dxonehandlamptool.firebaseapp.com",
+      projectId: "dxonehandlamptool",
+      storageBucket: "dxonehandlamptool.firebasestorage.app",
+      messagingSenderId: "518633479589",
+      appId: "1:518633479589:web:070ddaf3929639eb0f5c4c"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const provider = new GoogleAuthProvider();
+
+    let currentUser = null;
+    let unsubscribeFirestore = null;
+
+    const loginArea = document.getElementById('loginArea');
+    const userArea = document.getElementById('userArea');
+    const loginBtn = document.getElementById('loginBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const userIcon = document.getElementById('userIcon');
+    const userName = document.getElementById('userName');
+    const syncStatus = document.getElementById('syncStatus');
+
+    // ログイン処理
+    loginBtn.addEventListener('click', async () => {
+      try {
+        await signInWithPopup(auth, provider);
+      } catch (err) {
+        console.error("ログインエラー:", err);
+        alert("Googleログインに失敗しました。");
+      }
+    });
+
+    // ログアウト処理
+    logoutBtn.addEventListener('click', async () => {
+      try {
+        if (unsubscribeFirestore) unsubscribeFirestore();
+        await signOut(auth);
+      } catch (err) {
+        console.error("ログアウトエラー:", err);
+      }
+    });
+
+    // ログイン状態の監視
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        currentUser = user;
+        userName.textContent = user.displayName || 'ユーザー';
+        userIcon.src = user.photoURL || '';
+        
+        loginArea.style.display = 'none';
+        userArea.style.display = 'flex';
+
+        listenToCloudData(user.uid);
+      } else {
+        currentUser = null;
+        if (unsubscribeFirestore) unsubscribeFirestore();
+        loginArea.style.display = 'block';
+        userArea.style.display = 'none';
+        syncStatus.textContent = '(未ログイン)';
+
+        loadUserDataFromLocal();
+        renderTable();
+      }
+    });
+
+    // クラウドからの自動同期
+    function listenToCloudData(uid) {
+      syncStatus.textContent = '同期中...';
+      const docRef = doc(db, "cleardata", uid);
+
+      unsubscribeFirestore = onSnapshot(docRef, (docSnap) => {
+        if (docSnap.exists()) {
+          userClearData = docSnap.data().data || {};
+          saveUserDataToLocal();
+          syncStatus.textContent = 'クラウド同期完了';
+        } else {
+          saveUserDataToCloud();
+        }
+        renderTable();
+      }, (err) => {
+        console.error("同期エラー:", err);
+        syncStatus.textContent = '同期エラー';
+      });
+    }
+
+    // クラウドへの保存処理
+    async function saveUserDataToCloud() {
+      if (!currentUser) return;
+      syncStatus.textContent = '保存中...';
+      try {
+        const docRef = doc(db, "cleardata", currentUser.uid);
+        await setDoc(docRef, {
+          data: userClearData,
+          updatedAt: new Date().toISOString()
+        }, { merge: true });
+        syncStatus.textContent = 'クラウド同期完了';
+      } catch (err) {
+        console.error("保存エラー:", err);
+        syncStatus.textContent = '保存失敗';
+      }
+    }
+
+    // ランプ更新時のグローバル関数
+    window.toggleLamp = function(title, hand, lampType) {
+      if (!userClearData[title]) {
+        userClearData[title] = { L: { E: false, H: false, EX: false }, R: { E: false, H: false, EX: false } };
+      }
+      
+      const currentState = userClearData[title][hand][lampType];
+      userClearData[title][hand][lampType] = !currentState;
+
+      const btnId = `lamp-${hand}-${lampType}-${slugify(title)}`;
+      const btnEl = document.getElementById(btnId);
+      if (btnEl) btnEl.classList.toggle('active', !currentState);
+
+      saveUserDataToLocal();
+      if (currentUser) {
+        saveUserDataToCloud();
+      }
+    };
+  </script>
 </head>
 <body>
 
   <div class="container">
-    <h1>片手難易度表 Sparkle Shower</h1>
+    <div class="header-bar">
+      <h1>片手難易度表 Sparkle Shower</h1>
+
+      <div class="auth-container">
+        <div id="loginArea">
+          <button id="loginBtn" class="btn btn-google">Googleログイン</button>
+        </div>
+        <div id="userArea" class="user-profile" style="display: none;">
+          <img id="userIcon" class="user-avatar" src="" alt="Avatar">
+          <span id="userName" class="user-name"></span>
+          <button id="logoutBtn" class="btn">ログアウト</button>
+        </div>
+        <span id="syncStatus" class="sync-status"></span>
+      </div>
+    </div>
+
     <div id="meta" class="meta-info">データを読み込み中...</div>
 
-    <!-- フィルターパネル -->
     <div class="filter-panel">
-      <!-- 1. MODE (AC / INF) -->
       <div class="filter-group">
         <div class="filter-label">MODE</div>
         <div class="btn-group">
@@ -336,7 +486,6 @@
         </div>
       </div>
 
-      <!-- 2. 公式難易度 (複数選択) -->
       <div class="filter-group">
         <div class="filter-label">
           <span>公式難易度 (複数選択可)</span>
@@ -348,7 +497,6 @@
         </div>
       </div>
 
-      <!-- 3. 片手難易度 1〜10 (複数選択) -->
       <div class="filter-group">
         <div class="filter-label">
           <span>片手難易度 (複数選択可)</span>
@@ -357,19 +505,18 @@
         <div class="btn-group" id="rankBtnContainer"></div>
       </div>
 
-      <!-- 4. 検索バー -->
       <div class="filter-group">
         <input type="text" id="searchInput" class="search-input" placeholder="曲名で検索...">
       </div>
     </div>
 
-    <!-- テーブルエリア -->
     <div id="accordionContainer">
       <div style="text-align: center; color: var(--text-sub); padding: 20px;">データを読み込み中...</div>
     </div>
   </div>
 
   <script>
+    const STORAGE_KEY = 'sparkle_user_clear_data';
     const RANKS = ['①', '②', '③', '④', '⑤', '⑥', '⑦', '⑧', '⑨', '⑩'];
     
     let songData = [];
@@ -385,6 +532,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       buildRankButtons();
       setupEventListeners();
+      loadUserDataFromLocal();
       fetchData();
     });
 
@@ -402,9 +550,6 @@
         const data = await res.json();
         songData = data.songs;
         renderMeta(data.meta);
-
-        await loadUserData();
-        
         renderTable();
       } catch (err) {
         document.getElementById('meta').innerText = 'データ読み込みエラー';
@@ -470,70 +615,22 @@
       else array.push(item);
     }
 
-    window.toggleLamp = async function(title, hand, lampType) {
-      if (!userClearData[title]) {
-        userClearData[title] = { L: { E: false, H: false, EX: false }, R: { E: false, H: false, EX: false } };
-      }
-      
-      const currentState = userClearData[title][hand][lampType];
-      userClearData[title][hand][lampType] = !currentState;
-
-      // 即座にUIへ反映
-      const btnId = `lamp-${hand}-${lampType}-${slugify(title)}`;
-      const btnEl = document.getElementById(btnId);
-      if (btnEl) {
-        btnEl.classList.toggle('active', !currentState);
-      }
-
-      // クリックした瞬間に即時保存を実行
-      await saveUserData();
-    };
-
-    async function loadUserData() {
-      // 1. まずローカルストレージから即時復元
-      const localData = localStorage.getItem('sparkle_user_clear_data');
-      if (localData) {
-        try {
-          userClearData = JSON.parse(localData);
-        } catch (e) {
-          console.error('LocalStorageの読み込みエラー', e);
-        }
-      }
-
-      // 2. バックエンドAPIが利用可能な場合は同期を試行
+    function loadUserDataFromLocal() {
       try {
-        const response = await fetch('/api/userdata');
-        if (response.ok) {
-          const serverData = await response.json();
-          if (serverData && Object.keys(serverData).length > 0) {
-            userClearData = serverData;
-            localStorage.setItem('sparkle_user_clear_data', JSON.stringify(userClearData));
-          }
+        const localData = localStorage.getItem(STORAGE_KEY);
+        if (localData) {
+          userClearData = JSON.parse(localData);
         }
       } catch (e) {
-        console.warn('APIサーバー非接続（ローカルストレージデータを使用）');
+        console.error('LocalStorageの読み込みに失敗しました:', e);
       }
     }
 
-    async function saveUserData() {
-      const jsonString = JSON.stringify(userClearData);
-      
-      // 1. ローカルストレージへ即時保存 (確実にローカル保存)
+    function saveUserDataToLocal() {
       try {
-        localStorage.setItem('sparkle_user_clear_data', jsonString);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(userClearData));
       } catch (e) {
-        console.error('LocalStorageへの保存失敗:', e);
-      }
-
-      // 2. サーバーAPIへ即時送信 (API環境が存在する場合)
-      try {
-        await fetch('/api/userdata', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: jsonString
-        });
-      } catch (e) {
-        // 静的ホスティング等の環境での非同期エラーを許容
+        console.error('LocalStorageへの保存に失敗しました:', e);
       }
     }
 
@@ -601,20 +698,18 @@
               <td class="col-rank">${escapeHtml(rank)}</td>
               <td class="col-bemani"><span class="badge ${diffBadge}">${song.bemaniDifficulty}</span></td>
               <td><strong style="font-size: 1rem;">${escapeHtml(song.title)}</strong></td>
-              <!-- 左片手 ランプ -->
               <td class="col-lamp">
                 <div class="lamp-group">
-                  <button id="lamp-L-E-${slugify(titleKey)}" class="lamp-btn ${clearInfo.L.E ? 'active' : ''}" data-lamp="E" onclick="toggleLamp('${escapeJs(titleKey)}', 'L', 'E')">E</button>
-                  <button id="lamp-L-H-${slugify(titleKey)}" class="lamp-btn ${clearInfo.L.H ? 'active' : ''}" data-lamp="H" onclick="toggleLamp('${escapeJs(titleKey)}', 'L', 'H')">H</button>
-                  <button id="lamp-L-EX-${slugify(titleKey)}" class="lamp-btn ${clearInfo.L.EX ? 'active' : ''}" data-lamp="EX" onclick="toggleLamp('${escapeJs(titleKey)}', 'L', 'EX')">EX</button>
+                  <button id="lamp-L-E-${slugify(titleKey)}" class="lamp-btn ${clearInfo.L && clearInfo.L.E ? 'active' : ''}" data-lamp="E" onclick="toggleLamp('${escapeJs(titleKey)}', 'L', 'E')">E</button>
+                  <button id="lamp-L-H-${slugify(titleKey)}" class="lamp-btn ${clearInfo.L && clearInfo.L.H ? 'active' : ''}" data-lamp="H" onclick="toggleLamp('${escapeJs(titleKey)}', 'L', 'H')">H</button>
+                  <button id="lamp-L-EX-${slugify(titleKey)}" class="lamp-btn ${clearInfo.L && clearInfo.L.EX ? 'active' : ''}" data-lamp="EX" onclick="toggleLamp('${escapeJs(titleKey)}', 'L', 'EX')">EX</button>
                 </div>
               </td>
-              <!-- 右片手 ランプ -->
               <td class="col-lamp">
                 <div class="lamp-group">
-                  <button id="lamp-R-E-${slugify(titleKey)}" class="lamp-btn ${clearInfo.R.E ? 'active' : ''}" data-lamp="E" onclick="toggleLamp('${escapeJs(titleKey)}', 'R', 'E')">E</button>
-                  <button id="lamp-R-H-${slugify(titleKey)}" class="lamp-btn ${clearInfo.R.H ? 'active' : ''}" data-lamp="H" onclick="toggleLamp('${escapeJs(titleKey)}', 'R', 'H')">H</button>
-                  <button id="lamp-R-EX-${slugify(titleKey)}" class="lamp-btn ${clearInfo.R.EX ? 'active' : ''}" data-lamp="EX" onclick="toggleLamp('${escapeJs(titleKey)}', 'R', 'EX')">EX</button>
+                  <button id="lamp-R-E-${slugify(titleKey)}" class="lamp-btn ${clearInfo.R && clearInfo.R.E ? 'active' : ''}" data-lamp="E" onclick="toggleLamp('${escapeJs(titleKey)}', 'R', 'E')">E</button>
+                  <button id="lamp-R-H-${slugify(titleKey)}" class="lamp-btn ${clearInfo.R && clearInfo.R.H ? 'active' : ''}" data-lamp="H" onclick="toggleLamp('${escapeJs(titleKey)}', 'R', 'H')">H</button>
+                  <button id="lamp-R-EX-${slugify(titleKey)}" class="lamp-btn ${clearInfo.R && clearInfo.R.EX ? 'active' : ''}" data-lamp="EX" onclick="toggleLamp('${escapeJs(titleKey)}', 'R', 'EX')">EX</button>
                 </div>
               </td>
             </tr>
